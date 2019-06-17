@@ -1,0 +1,7 @@
+{
+    "require": {
+        "acquia/lift-sdk-php": "^0.9.1",
+        "consolidation/robo" : "~1",
+        "vlucas/phpdotenv": "^3.4"
+    }
+}
