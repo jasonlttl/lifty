@@ -28,6 +28,32 @@ class RoboFile extends \Robo\Tasks
 
     print_r($filtered);
   }
+  /**
+   * Prints a list of rules.
+   *
+   * @return void
+   */
+  public function rules() {
+    $rules = [];
+    $clients = $this->getSiteClients();
+    foreach ($clients as $site => $client) {
+      $manager = $client->getRuleManager();
+      $results = $manager->query(['prefetch' => true]);
+      foreach ($results as $rule) {
+        $rules[$site][$rule->getId()] = [
+          'title' => $rule->getLabel(),
+          'description' => $rule->getDescription(),
+          'segment' => $rule->getSegmentId(),
+          'weight' => $rule->getWeight(),
+          'status' => $rule->getStatus(),
+          'created' => $rule->getCreated(),
+          'updated' => $rule->getUpdated(),
+        ];
+      }
+    }
+    ksort($rules);
+    $this->say(print_r($rules, true));
+  }
 
   private function getRules() {
     $rules = [];
@@ -36,7 +62,7 @@ class RoboFile extends \Robo\Tasks
       $manager = $client->getRuleManager();
       $results = $manager->query(['prefetch' => true]);
       foreach ($results as $rule) {
-        $rules[$site][$rule->getId()] = $rule;
+        $rules[$site][$rule->getId()] = [$rule];
       }
     }
     ksort($rules);
