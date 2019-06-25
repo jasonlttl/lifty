@@ -55,6 +55,20 @@ class RoboFile extends \Robo\Tasks
     $this->say(print_r($rules, true));
   }
 
+  public function slots() {
+    $slots = [];
+    $clients = $this->getSiteClients();
+    foreach ($clients as $site => $client) {
+      $manager = $client->getSlotManager();
+      $results = $manager->query(['prefetch' => true]);
+      foreach ($results as $slot) {
+        $slots[$site][$slot->getId()] = $slot;
+      }
+    }
+    ksort($slots);
+    $this->say(print_r($slots, true));
+  }
+
   private function getRules() {
     $rules = [];
     $clients = $this->getSiteClients();
