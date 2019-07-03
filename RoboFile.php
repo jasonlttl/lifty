@@ -38,16 +38,16 @@ class RoboFile extends \Robo\Tasks
     $clients = $this->getSiteClients();
     foreach ($clients as $site => $client) {
       $manager = $client->getRuleManager();
-      $results = $manager->query(['prefetch' => true]);
+      $results = $manager->query(['prefetch' => 'false', 'rows' => -1, 'status' => 'published']);
       foreach ($results as $rule) {
         $rules[$site][$rule->getId()] = [
           'title' => $rule->getLabel(),
-          'description' => $rule->getDescription(),
+          //'description' => $rule->getDescription(),
           'segment' => $rule->getSegmentId(),
-          'weight' => $rule->getWeight(),
+          //'weight' => $rule->getWeight(),
           'status' => $rule->getStatus(),
-          'created' => $rule->getCreated(),
-          'updated' => $rule->getUpdated(),
+          //'created' => $rule->getCreated(),
+          //'updated' => $rule->getUpdated(),
         ];
       }
     }
